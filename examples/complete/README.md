@@ -11,28 +11,23 @@ This example creates:
 
 ## Usage
 
-To run this example:
+To run this example, execute the following commands:
 
-1. Configure your Alibaba Cloud credentials
-2. Initialize Terraform:
-   ```bash
-   terraform init
-   ```
+```bash
+terraform init
+terraform plan
+terraform apply
+```
 
-3. Plan the deployment:
-   ```bash
-   terraform plan
-   ```
+To destroy the resources when done:
 
-4. Apply the configuration:
-   ```bash
-   terraform apply
-   ```
+```bash
+terraform destroy
+```
 
-5. Clean up when done:
-   ```bash
-   terraform destroy
-   ```
+## Cost
+
+Note: This example will create resources that incur costs in your Alibaba Cloud account. Make sure to destroy the resources after testing to avoid unnecessary charges.
 
 ## Variables
 

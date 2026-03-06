@@ -1,50 +1,31 @@
 Alibaba Cloud Common Bandwidth Package (CBWP) Terraform Module
 
-================================================ 
-
 # terraform-alicloud-cbwp
 
 English | [简体中文](https://github.com/alibabacloud-automation/terraform-alicloud-cbwp/blob/main/README-CN.md)
 
-Terraform module which creates Common Bandwidth Package (CBWP) resources on Alibaba Cloud. This module helps you manage shared bandwidth for multiple EIP addresses, providing cost-effective bandwidth sharing across your cloud infrastructure. For more information about EIP Bandwidth Plan, see [What is Common Bandwidth Package](https://www.alibabacloud.com/help/en/eip-bandwidth-plan).
+Terraform module which creates [Common Bandwidth Package (CBWP)](https://www.alibabacloud.com/help/en/eip-bandwidth-plan) resources on Alibaba Cloud. This module helps you manage shared bandwidth for multiple EIP addresses, providing cost-effective bandwidth sharing across your cloud infrastructure.
 
 ## Usage
 
 This module provides a simple way to create and manage a Common Bandwidth Package along with EIP attachments. You can use it to share bandwidth across multiple EIP addresses for cost optimization.
 
 ```terraform
-data "alicloud_resource_manager_resource_groups" "default" {
-  status = "OK"
-}
-
 module "cbwp" {
   source = "alibabacloud-automation/cbwp/alicloud"
-  
+
   common_bandwidth_package_config = {
     bandwidth_package_name = "my-cbwp"
-    description            = "Common Bandwidth Package for production environment"
-    isp                    = "BGP"
     bandwidth              = 200
     internet_charge_type   = "PayByBandwidth"
-    resource_group_id      = data.alicloud_resource_manager_resource_groups.default.ids[0]
-    tags = {
-      Environment = "production"
-      ManagedBy   = "Terraform"
-    }
   }
-  
-  enable_eip_attachment = true
-  
+
   eip_attachment_configs = {
     web_server = {
-      instance_id                 = "eip-bp1234567890abcdef"
-      bandwidth_package_bandwidth = "100"
-      ip_type                     = "EIP"
+      instance_id = "eip-bp123456xxxxxxx"
     }
     api_server = {
-      instance_id                 = "eip-bp0987654321fedcba"
-      bandwidth_package_bandwidth = "50"
-      ip_type                     = "EIP"
+      instance_id = "eip-bp09876xxxxxxxx"
     }
   }
 }
@@ -83,9 +64,8 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_common_bandwidth_package_config"></a> [common\_bandwidth\_package\_config](#input\_common\_bandwidth\_package\_config) | Configuration for the Common Bandwidth Package. The attributes 'bandwidth\_package\_name', 'bandwidth', and 'internet\_charge\_type' are required. | <pre>object({<br>    bandwidth_package_name    = string<br>    description               = optional(string, "Common Bandwidth Package created by Terraform")<br>    isp                       = optional(string, "BGP")<br>    bandwidth                 = number<br>    ratio                     = optional(number, null)<br>    internet_charge_type      = string<br>    resource_group_id         = optional(string, null)<br>    security_protection_types = optional(list(string), null)<br>    deletion_protection       = optional(bool, false)<br>    force                     = optional(bool, false)<br>    zone                      = optional(string, null)<br>    tags                      = optional(map(string), {})<br>  })</pre> | n/a | yes |
-| <a name="input_eip_attachment_configs"></a> [eip\_attachment\_configs](#input\_eip\_attachment\_configs) | Configuration for EIP attachments to the Common Bandwidth Package. Each key represents a unique identifier for the attachment. | <pre>map(object({<br>    instance_id                 = string<br>    bandwidth_package_bandwidth = optional(string, null)<br>    ip_type                     = optional(string, "EIP")<br>  }))</pre> | `{}` | no |
-| <a name="input_enable_eip_attachment"></a> [enable\_eip\_attachment](#input\_enable\_eip\_attachment) | Whether to enable EIP attachment to the Common Bandwidth Package. | `bool` | `false` | no |
+| <a name="input_common_bandwidth_package_config"></a> [common\_bandwidth\_package\_config](#input\_common\_bandwidth\_package\_config) | Configuration for the Common Bandwidth Package. The attributes 'bandwidth\_package\_name', 'bandwidth', and 'internet\_charge\_type' are required. | <pre>object({<br/>    bandwidth_package_name    = string<br/>    description               = optional(string, "Common Bandwidth Package created by Terraform")<br/>    isp                       = optional(string, "BGP")<br/>    bandwidth                 = number<br/>    ratio                     = optional(number, null)<br/>    internet_charge_type      = string<br/>    resource_group_id         = optional(string, null)<br/>    security_protection_types = optional(list(string), null)<br/>    deletion_protection       = optional(bool, false)<br/>    force                     = optional(bool, false)<br/>    zone                      = optional(string, null)<br/>    tags                      = optional(map(string), {})<br/>  })</pre> | n/a | yes |
+| <a name="input_eip_attachment_configs"></a> [eip\_attachment\_configs](#input\_eip\_attachment\_configs) | Configuration for EIP attachments to the Common Bandwidth Package. Each key represents a unique identifier for the attachment. | <pre>map(object({<br/>    instance_id                 = string<br/>    bandwidth_package_bandwidth = optional(string, null)<br/>    ip_type                     = optional(string, "EIP")<br/>  }))</pre> | `{}` | no |
 
 ## Outputs
 
